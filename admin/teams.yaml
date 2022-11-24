@@ -1,0 +1,9 @@
+teams:
+  - name: hello-world
+    icon: icon-url
+    members:
+      - mmaggiolo@deloitte.co.uk
+  - name: another-one
+    icon: icon-url
+    members:
+      - mmaggiolo@deloitte.co.uk
