@@ -16,4 +16,5 @@ def agent_predict(observation: np.array) -> int:
     global policy
     # Agent takes an observation and returns an action
     step = ts.transition(observation[None, ...], np.array([0.]), discount=np.array([1.]))
-    return policy.action(step).action.numpy()[0]
+    action = policy.action(step).action.numpy()[0]
+    return action
