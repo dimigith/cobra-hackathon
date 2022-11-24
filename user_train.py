@@ -63,8 +63,9 @@ if __name__ == "__main__":
     eval_interval = 1000
 
     # QNet options
-    fc_layer_params = (32, 16, 8)
+    fc_layer_params = (64, 32, 8)
     start_epsilon = 0.3
+    # start_epsilon = 0.5
     end_epsilon = 0.
     qnet_target_update_tau = 0.1
     qnet_target_update_period = 1
@@ -93,6 +94,7 @@ if __name__ == "__main__":
         start_epsilon,
         train_step_counter,
         num_iterations,
+        # int(num_iterations*0.5),
         end_learning_rate=end_epsilon
     )
 

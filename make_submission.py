@@ -23,6 +23,10 @@ SUBMISSION_BUCKET = "pavlovs-snake-submissions"
 
 TEAM_NAME_SANITIZER = lambda x: re.sub("[^A-Za-z0-9-]+", "-" , x)
 
+os.environ["AWS_ACCESS_KEY_ID"] = "AKIA2V4MYYJNNL7Z62U5"
+os.environ["AWS_SECRET_ACCESS_KEY"] = "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"
+# os.environ["AWS_SESSION_TOKEN"] = ""
+    # http://18.170.24.249:3000/
 
 if __name__ == "__main__":
 

@@ -25,6 +25,8 @@ if __name__ == "__main__":
     _total_reward = 0
     _total_episode_reward = 0
 
+    _episode_rewards = []
+
     for i in range(args.num_episodes):
         obs = env.reset()
         is_done = False
@@ -38,19 +40,22 @@ if __name__ == "__main__":
             action = agent_predict(obs)
             obs, rew, is_done, _ = env.step(action)
 
-
-
-            if sys.argv[0].endswith('watch_agent.py'):
-                print(f"Ep:{_episode_count}, Step:{_step_count}, Reward:{rew:.3f} (Tot:{_total_episode_reward:.3f}), Done:{is_done}, Obs:{obs}")
-                _step_count += 1
-                _total_reward += rew
-                _total_episode_reward += rew
-                if is_done:
-                    _step_count = 0
-                    _total_episode_reward = 0
-                    _episode_count += 1
-                    print(
-                        f"--->Total ep reward:{_total_reward} Ep:{_episode_count}, Step:{_step_count}, Reward:{rew:.3f} (Tot:{_total_reward:.3f})")
-
+            # if sys.argv[0].endswith('watch_agent.py'):
             img = cv2.resize(env.render(), (480, 480), interpolation = cv2.INTER_AREA)
             cv2.imshow('Watch Snake', img)
+
+            _obs = obs.tolist()
+            print(
+                f"Ep:{_episode_count}, Step:{_step_count}, Reward:{rew:.3f} (Tot:{_total_episode_reward:.3f}), Done:{is_done}, Obs:{_obs}")
+            _step_count += 1
+            _total_reward += rew
+            _total_episode_reward += rew
+            if is_done:
+                _step_count = 0
+                _episode_rewards.append(_total_episode_reward)
+                _total_episode_reward = 0
+                _episode_count += 1
+                print(
+                    f"--->Total ep reward:{_total_reward} Ep:{_episode_count}, Step:{_step_count}, Reward:{rew:.3f} (Tot:{_total_reward:.3f})")
+
+    print(f"Max episode reward: {max(_episode_rewards)}, -->> {_episode_rewards}")

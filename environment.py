@@ -70,7 +70,8 @@ class SnakeEnvironment(Env):
 
     def render(self, mode='rgb_array'):
         if mode == 'rgb_array':
-            img = np.full((*self._grid_size, 3), 255, np.uint8)
+            img = np.full((*self._grid_size, 3), 255-random.randint(0, 50), np.uint8)
+            img -= np.random.randint(0, 20, size=img.shape).astype(np.uint8)
             img[tuple(zip(*self._snake))] = [0, 0, 255]
             img[self._snake[-1]] = [0, 255, 0]
             img[self._food] = [255, 0, 0]
