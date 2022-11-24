@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 import time
 import os
+import sys
 
 import cv2
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
@@ -19,6 +20,11 @@ if __name__ == "__main__":
     init(args.modelpath)
     env = SnakeEnvironment()
 
+    _step_count = 0
+    _episode_count = 0
+    _total_reward = 0
+    _total_episode_reward = 0
+
     for i in range(args.num_episodes):
         obs = env.reset()
         is_done = False
@@ -31,5 +37,20 @@ if __name__ == "__main__":
             time.sleep(0.05)
             action = agent_predict(obs)
             obs, rew, is_done, _ = env.step(action)
+
+
+
+            if sys.argv[0].endswith('watch_agent.py'):
+                print(f"Ep:{_episode_count}, Step:{_step_count}, Reward:{rew:.3f} (Tot:{_total_episode_reward:.3f}), Done:{is_done}, Obs:{obs}")
+                _step_count += 1
+                _total_reward += rew
+                _total_episode_reward += rew
+                if is_done:
+                    _step_count = 0
+                    _total_episode_reward = 0
+                    _episode_count += 1
+                    print(
+                        f"--->Total ep reward:{_total_reward} Ep:{_episode_count}, Step:{_step_count}, Reward:{rew:.3f} (Tot:{_total_reward:.3f})")
+
             img = cv2.resize(env.render(), (480, 480), interpolation = cv2.INTER_AREA)
             cv2.imshow('Watch Snake', img)
