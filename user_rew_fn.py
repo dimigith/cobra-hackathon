@@ -41,19 +41,19 @@ def get_reward(
 
     obs = get_observation(snake, food, prev_snake, prev_food, grid_size)
 
-    heading_towards_food_reward_y = 1 if obs[0]*obs[8] >= 0 else -3
-    heading_towards_food_reward_x = 1 if obs[1]*obs[9] >= 0 else -3
+    heading_towards_food_reward_y = 1 if obs[0]*obs[8] > 0 else 0 if obs[0]*obs[8]==0 else -3
+    heading_towards_food_reward_x = 1 if obs[1]*obs[9] > 0 else 0 if obs[1]*obs[9]==0 else -3
     heading_towards_food_reward = heading_towards_food_reward_y + 1.1*heading_towards_food_reward_x
 
     getting_closer_reward = 1 if new_dist < prev_dist else -3
 
     hugging_obstacles_reward = 1 if obs[5] or obs[7] else 0
 
-    facing_an_obstacle_reward = -is_facing_an_obstacle(obs[8:10], obs[4:8])
+    # facing_an_obstacle_reward = -obs[2]#is_facing_an_obstacle(obs[8:10], obs[4:8])
     # if facing_an_obstacle_reward<0:
     #     print('asdd')
 
-    rew = 0.05*getting_closer_reward+0.05*heading_towards_food_reward+0.0*facing_an_obstacle_reward
+    rew = 0.05*getting_closer_reward+0.05*heading_towards_food_reward#+0.3*facing_an_obstacle_reward
 
     return rew
 

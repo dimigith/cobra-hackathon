@@ -25,23 +25,19 @@ def get_observation(
     state.append(-1 if food[1] < head[1] else 0 if food[1] == head[1] else 1)# -1 if food is on the left side of head, 1 if right and 0 else
     # Apple is below the snake
     # state.append(food[0] > head[0])
-    state.append(0)
+    state.append(proximity_to_obstacle(snake, grid_size))
     # Apple is on the right of the snake
     # state.append(food[1] > head[1])
     state.append(0)
 
-    def is_obstacle(pos):
-        if pos[0] < 0 or pos[0] >= grid_size[0] or pos[1] < 0 or pos[1] >= grid_size[1] or pos in snake:
-            return 1
-        return 0
     # obstacle above the snake
-    state.append(is_obstacle((head[0] - 1, head[1])))
+    state.append(is_obstacle((head[0] - 1, head[1]), grid_size, snake))
     # obstacle on the right of the snake
-    state.append(is_obstacle((head[0], head[1] + 1)))
+    state.append(is_obstacle((head[0], head[1] + 1), grid_size, snake))
     # obstacle below the snake
-    state.append(is_obstacle((head[0] + 1, head[1])))
+    state.append(is_obstacle((head[0] + 1, head[1]), grid_size, snake))
     # obstacle on the left of the snake
-    state.append(is_obstacle((head[0], head[1] - 1)))
+    state.append(is_obstacle((head[0], head[1] - 1), grid_size, snake))
 
     snake_dir = tuple_diff(head, snake[-2])
 
@@ -68,9 +64,32 @@ def get_observation(
 
     return state
 
+
+def is_obstacle(pos, grid_size, snake):
+    if pos[0] < 0 or pos[0] >= grid_size[0] or pos[1] < 0 or pos[1] >= grid_size[1] or pos in snake:
+        return 1
+    return 0
+
+
 def wall_proximity(head, grid_size):
     height, width = grid_size
     y, x = head
     y_wall_dist_n, x_wall_dist_n = 4*abs(height/2-y)/height/2, 4*abs(width/2-x)/width/2
     y_n_pow, x_n_pow = np.power(y_wall_dist_n, 4), np.power(x_wall_dist_n, 4)
     return y_n_pow, x_n_pow
+
+
+def proximity_to_obstacle(snake: List[Tuple[int]], grid_size: Tuple[int]):
+    head = snake[-1]
+    snake_dir = tuple_diff(head, snake[-2])
+    next_head = head
+    for i in range(grid_size[0]):
+        next_head_y, next_head_x = next_head[0]+snake_dir[0]*i, next_head[1]+snake_dir[1]*i
+        if is_obstacle([next_head_y, next_head_x], grid_size, snake):
+            break
+    return (1-i/grid_size[0])**8
+
+
+
+
+

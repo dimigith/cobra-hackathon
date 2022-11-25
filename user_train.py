@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
     ## ------------------------ Configuration -------------------------- ##
     # RL algorithm options
-    num_iterations = 9000
+    num_iterations = 15000
     initial_collect_steps = 100
     collect_steps_per_iteration = 1 
     replay_buffer_max_length = 50000
@@ -63,9 +63,9 @@ if __name__ == "__main__":
     eval_interval = 1000
 
     # QNet options
-    fc_layer_params = (64, 32, 8)
+    fc_layer_params = (32, 64, 64, 32)
     start_epsilon = 0.3
-    # start_epsilon = 0.5
+    start_epsilon = 0.5
     end_epsilon = 0.
     qnet_target_update_tau = 0.1
     qnet_target_update_period = 1
