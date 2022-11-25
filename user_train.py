@@ -63,7 +63,7 @@ if __name__ == "__main__":
     eval_interval = 1000
 
     # QNet options
-    fc_layer_params = (32, 64, 64, 32)
+    fc_layer_params = (32, 64, 128, 64, 32)
     start_epsilon = 0.3
     start_epsilon = 0.5
     end_epsilon = 0.
